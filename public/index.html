@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+        }
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .center-inner {
+            display: block;
+        }
+        .hidden {
+            display: none;
+        }
+
+        .error {
+            color: darkred;
+        }
+        .sucsess {
+            color: darkgreen;
+        }
+        .message {
+            margin: 10px;
+            font-size: small;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="center">
+        <div class="center-inner">
+            <div id="message" class="message hidden"></div>
+            <form action="/" method="POST">
+                <label for="password">Password: </label>
+                <input type="password" id="password" name="password">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const $ = (el) => document.querySelector(el);
+        (() => {
+            const form = $('form');
+            const inp = $('input');
+            const message = $('#message');
+            inp.value = '';
+
+            form.addEventListener('submit', async (ev) => {
+                ev.preventDefault();
+
+                const res = await (await fetch('/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({password: inp.value}),
+                })).json();
+
+                if (res.status == 1) {
+                    message.innerHTML = 'Success!';
+                    message.classList.remove('error');
+                    message.classList.add('sucsess');
+                    console.log(res.entries)
+                }
+                else {
+                    message.innerHTML = 'Error!';
+                    message.classList.remove('sucsess');
+                    message.classList.add('error');
+                };
+                message.classList.remove('hidden');
+
+                inp.value = '';
+            });
+        })();
+    </script>
+</body>
+</html>
