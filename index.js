@@ -39,7 +39,7 @@ app.get('/t/*', (req, res) => {
     file = (text, host) => {
         return html.replace('**FAVICON**', `${host}/favicon/${text}`);
     };
-    server.listen(80, () => {
+    server.listen(process.env.PORT || 80, () => {
         console.log('Listening on port 80!', `Password: ${password}`);
     });
 })();
